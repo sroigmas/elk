@@ -2,10 +2,19 @@ version: '3.7'
 
 services:
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.5.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.6
     container_name: elasticsearch
     environment:
-      - "ELASTIC_PASSWORD=elastic"
+      - "discovery.type=single-node"
     ports: [ '9200:9200' ]
     volumes:
-      - './var/elasticsearch:/usr/share/elasticsearch/data'
+      - './etc/elasticsearch:/usr/share/elasticsearch/data'
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.17.6
+    container_name: logstash
+    depends_on: [ 'elasticsearch' ]
+    ports: [ '9600:9600' ]
+    volumes:
+      - './etc/logstash/pipeline:/usr/share/logstash/pipeline'
+      - './logs:/logs'
