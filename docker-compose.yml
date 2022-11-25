@@ -44,21 +44,36 @@ services:
 
   # --------------------------------------------------
 
-#  grafana:
-#    image: "grafana/grafana:8.5.13"
-#    ports:
-#      - "3000:3000"
+  #  grafana:
+  #    image: "grafana/grafana:8.5.13"
+  #    ports:
+  #      - "3000:3000"
+  #    volumes:
+  #      - ./etc/loki/provisioning:/etc/grafana/provisioning
+  #
+  #  loki:
+  #    image: "grafana/loki:2.4.2"
+  #    ports:
+  #      - "3100:3100"
+  #
+  #  promtail:
+  #    image: "grafana/promtail:2.4.2"
+  #    volumes:
+  #      - ./logs:/logs
+  #      - ./etc/promtail/promtail.yml:/etc/promtail/config.yaml
+  #    command: -config.file=/etc/promtail/config.yaml
+
+  # --------------------------------------------------
+
+#  prometheus:
+#    image: prom/prometheus:v2.40.3
 #    volumes:
-#      - ./etc/loki/provisioning:/etc/grafana/provisioning
-#
-#  loki:
-#    image: "grafana/loki:2.4.2"
+#      - ./etc/prometheus/:/etc/prometheus/
+#      - ./etc/prometheus/prometheus_data:/prometheus
+#    command:
+#      - '--config.file=/etc/prometheus/prometheus.yml'
+#      - '--storage.tsdb.path=/prometheus'
+#      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+#      - '--web.console.templates=/usr/share/prometheus/consoles'
 #    ports:
-#      - "3100:3100"
-#
-#  promtail:
-#    image: "grafana/promtail:2.4.2"
-#    volumes:
-#      - ./logs:/logs
-#      - ./etc/promtail/promtail.yml:/etc/promtail/config.yaml
-#    command: -config.file=/etc/promtail/config.yaml
+#      - 9090:9090
