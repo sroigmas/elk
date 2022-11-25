@@ -17,14 +17,23 @@ services:
     volumes:
       - './etc/elasticsearch:/usr/share/elasticsearch/data'
 
-  logstash:
-    image: docker.elastic.co/logstash/logstash:7.17.6
-    container_name: logstash
-    depends_on: [ 'elasticsearch' ]
-    ports: [ '9600:9600' ]
+  #  logstash:
+  #    image: docker.elastic.co/logstash/logstash:7.17.6
+  #    container_name: logstash
+  #    depends_on: [ 'elasticsearch' ]
+  #    ports: [ '9600:9600' ]
+  #    volumes:
+  #      - './etc/logstash/pipeline:/usr/share/logstash/pipeline'
+  #      - './logs:/logs'
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.17.6
+    container_name: filebeat
+    user: root
     volumes:
-      - './etc/logstash/pipeline:/usr/share/logstash/pipeline'
-      - './logs:/logs'
+      - './logs:/logs:ro'
+      - './etc/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml'
+    command: [ "--strict.perms=false" ]
 
   kibana:
     image: docker.elastic.co/kibana/kibana:7.17.6
