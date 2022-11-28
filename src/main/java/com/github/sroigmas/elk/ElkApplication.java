@@ -1,12 +1,13 @@
 package com.github.sroigmas.elk;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 
 @SpringBootApplication
+@EnableScheduling
 @Slf4j
 public class ElkApplication {
 
@@ -14,12 +15,9 @@ public class ElkApplication {
     SpringApplication.run(ElkApplication.class, args);
   }
 
-  @Bean
-  CommandLineRunner runner() {
-    return args -> {
-      for (int i = 0; i < 10; i++) {
-        log.info("Log {}", i);
-      }
-    };
+  @Scheduled(fixedRate = 1000)
+  public void logMillis() throws InterruptedException {
+    log.info("Millis: {}", System.currentTimeMillis());
+    Thread.sleep(1000);
   }
 }
