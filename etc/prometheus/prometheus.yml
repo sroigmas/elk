@@ -1,13 +1,30 @@
 scrape_configs:
+
   - job_name: 'prometheus'
     scrape_interval: 5s
     static_configs:
       - targets: [ 'localhost:9090' ]
-        labels:
-          env: local
-          region: us-east-1
+  #        labels:
+  #          env: local
+  #          region: us-east-1
+
   - job_name: 'elk-app'
     metrics_path: '/actuator/prometheus'
     scrape_interval: 5s
     static_configs:
       - targets: [ 'app:8080' ]
+
+#  - job_name: 'alertmanager'
+#    scrape_interval: 5s
+#    static_configs:
+#      - targets: [ 'alertmanager:9093' ]
+#
+#rule_files:
+#  - "/etc/prometheus/alertmanager/rules.yml"
+#
+#alerting:
+#  alertmanagers:
+#    - scheme: http
+#      static_configs:
+#        - targets:
+#            - "alertmanager:9093"
